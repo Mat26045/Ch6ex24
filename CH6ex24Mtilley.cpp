@@ -17,14 +17,14 @@ string choiceToString(int choice) {
 
 string getPlayerChoice() {
     string playerChoice;
-    cout << "Choose one: rock, paper, or scissors: ";
+    cout << "Choose one: rock, paper, or scissors (or type 'exit' to quit): ";
     while (true) {
         cin >> playerChoice;
-        if (playerChoice == "rock" || playerChoice == "paper" || playerChoice == "scissors") {
+        if (playerChoice == "rock" || playerChoice == "paper" || playerChoice == "scissors" || playerChoice == "exit") {
             return playerChoice;
         }
         else {
-            cout << "Invalid choice. Please choose again: rock, paper, or scissors: ";
+            cout << "Invalid choice. Please choose again: rock, paper, or scissors (or type 'exit' to quit): ";
         }
     }
 }
@@ -44,7 +44,13 @@ string determineWinner(string playerChoice, string computerChoice) {
 }
 
 void playGame() {
+    string playerName;
+    int playerWins = 0, computerWins = 0, draws = 0;
+
     srand(static_cast<unsigned int>(time(0)));
+
+    cout << "Enter your name: ";
+    cin >> playerName;
 
     while (true) {
         int computerChoiceNumber = getComputerChoice();
@@ -52,22 +58,33 @@ void playGame() {
 
         string playerChoice = getPlayerChoice();
 
-        cout << "Player chose: " << playerChoice << endl;
+        if (playerChoice == "exit") {
+            cout << "Exiting the game. Thank you for playing!" << endl;
+            break;
+        }
+
+        cout << playerName << " chose: " << playerChoice << endl;
         cout << "Computer chose: " << computerChoice << endl;
 
         string winner = determineWinner(playerChoice, computerChoice);
 
         if (winner == "draw") {
-            cout << "It's a draw! Let's play again." << endl << endl;
+            cout << "It's a draw! Let's play again.\n" << endl;
+            draws++;
         }
         else if (winner == "player") {
-            cout << "Congratulations! You win!" << endl;
-            break;
+            cout << "Congratulations, " << playerName << "! You win this round.\n" << endl;
+            playerWins++;
         }
         else {
-            cout << "Sorry, the computer wins. Try again." << endl;
-            break;
+            cout << "Sorry, the computer wins this round.\n" << endl;
+            computerWins++;
         }
+
+        cout << "\nCurrent score:\n";
+        cout << playerName << ": " << playerWins << " wins\n";
+        cout << "Computer: " << computerWins << " wins\n";
+        cout << "Draws: " << draws << "\n\n";
     }
 }
 
